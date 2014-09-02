@@ -1,12 +1,8 @@
 {% extends "dataviewer/base.html" %}
 
 {% block page %}
-
-  <div data-module="ogc_preview"
-       data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=true)) }}"
-       data-module-resource = "{{ h.dump_json(resource_json) }}";
-       data-module-resource-view = "{{ h.dump_json(resource_view_json) }}";
-    >
+  <div data-module="ogc_view" data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=true)) }}">
+    <div id="map" style="width: 100%; height: 600px"></div>
     <h4 class="loading-dialog">
       <div class="loading-spinner"></div>
       <div class="left">{{ _('Loading...') }}</div>
@@ -15,6 +11,3 @@
 
   {% resource 'ckanext-ogcpreview/main' %}
 {% endblock %}
-
-{% block styles %}{% endblock %}
-{% block custom_styles %}{% endblock %}

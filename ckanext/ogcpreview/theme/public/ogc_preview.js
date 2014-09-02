@@ -1,6 +1,4 @@
-'use strict';
-
-this.ckan.module('ogc_preview', function (jQuery, _) {
+this.ckan.module('ogc_view', function ($, _) {
   return {
     options: {
       i18n: {
@@ -13,7 +11,7 @@ this.ckan.module('ogc_preview', function (jQuery, _) {
     },
 
     initialize: function () {
-      jQuery.proxyAll(this, /_on/);
+      $.proxyAll(this, /_on/);
       this.el.ready(this._onReady);
       // hack to make leaflet use a particular location to look for images
       L.Icon.Default.imagePath = this.options.site_url + 'vendor/leaflet/0.4.4/images';
@@ -23,15 +21,6 @@ this.ckan.module('ogc_preview', function (jQuery, _) {
       this.loadPreviewDialog(preload_resource);
     },
 
-    // **Public: Loads a data preview**
-    //
-    // Fetches the preview data object from the link provided and loads the
-    // parsed data from the webstore displaying it in the most appropriate
-    // manner.
-    //
-    // link - Preview button.
-    //
-    // Returns nothing.
     loadPreviewDialog: function (resourceData) {
       var self = this;
 
@@ -42,9 +31,6 @@ this.ckan.module('ogc_preview', function (jQuery, _) {
 
       recline.Backend.DataProxy.timeout = 10000;
 
-      // 2 situations
-      // a) something was posted to the datastore - need to check for this
-      // b) csv or xls (but not datastore)
       resourceData.formatNormalized = this.normalizeFormat(resourceData.format);
 
       resourceData.url  = this.normalizeUrl(resourceData.url);
@@ -60,38 +46,55 @@ this.ckan.module('ogc_preview', function (jQuery, _) {
         }
       }
 
-      var errorMsg, dataset;
+      var dataset
+        , format;
 
-      if (resourceData.protocol === "OGC:WFS") {
+      format = resourceData.format.toLowerCase();
+      if (['wfs', 'ogc:wfs'].indexOf(format) > -1) {
           resourceData.backend = 'memory';
           dataset = new recline.Model.Dataset({records:resourceData.reclineJSON});
           dataset.fetch().done(function(dataset){self.initializeDataExplorer(dataset)});
-      } else if (resourceData.protocol === "OGC:WMS") {
-        function initMap() {
-            map = new L.Map('map');
+      } else if (['wms', 'ogc:wms'].indexOf(format) > -1) {
 
-            var baseUrl='http://{s}.maptile.maps.svc.ovi.com/maptiler/v2/maptile/newest/terrain.day/{z}/{x}/{y}/256/png8';
-            var osmAttrib='Map data © OpenStreetMap contributors';
-            var osm = new L.TileLayer(baseUrl, {minZoom: 1, maxZoom: 12, attribution: osmAttrib});
-            var serviceUrl = resourceData.service_url.split('?')[0];
-            
-            var wms = new L.TileLayer.WMS(serviceUrl, {
-                layers: resourceData.layer,
-                format: "image/png",
-                transparent: true
-             });
+        (function () {
+          var map
+            , opts
+            , baseMap
+            , serviceUrl
+            , wms
+            , bbox
+            , bounds
+            ;
 
-            var bbox = resourceData.bbox;
-            var bounds = L.latLngBounds([
-                [bbox[1], bbox[0]],
-                [bbox[3], bbox[2]]
-            ]);
+          opts = {attributionControl: true};
+          bbox = resourceData.bbox;
+          bounds = L.latLngBounds([
+            [bbox[1], bbox[0]],
+            [bbox[3], bbox[2]]
+          ]);
 
-            map.fitBounds(bounds);
-            map.addLayer(osm);
-            map.addLayer(wms);
-        }
-        initMap();
+          map = new L.Map('map', opts).fitBounds(bounds);
+
+          baseMap = new L.TileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {
+            subdomains: 1234,
+            attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">'
+              + 'MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetm'
+              + 'ap.org">OpenStreetMap</a> contributors, <a href="http://creative'
+              + 'commons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 12
+          });
+
+          serviceUrl = resourceData.service_url.split('?')[0];
+          wms = new L.TileLayer.WMS(serviceUrl, {
+            layers: resourceData.layer,
+            format: resourceData.tile_format,
+            transparent: true
+          });
+
+          map.addLayer(baseMap);
+          map.addLayer(wms);
+        })();
       }
     },
 

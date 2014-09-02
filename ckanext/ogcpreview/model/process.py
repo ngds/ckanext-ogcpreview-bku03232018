@@ -45,19 +45,17 @@ class HandleWMS():
     # Pass in a dictionary with the layer name bound to 'layer'.  If the 'layer' is not found, then just return the
     # first layer in the list of available layers
     def do_layer_check(self, data_dict):
-        layer_list = list(self.wms.contents)
+        wms_layers = list(self.wms.contents)
         resource = data_dict.get("resource", {})
-        this_layer = resource.get("layer")
-        try:
-            first_layer = layer_list[0]
-            if this_layer in layer_list:
-                return this_layer
-            elif this_layer.lower() in layer_list:
-                return this_layer.lower()
-            else:
-                return first_layer
-        except Exception:
-            pass
+        res_layer = resource.get("layer")
+
+        if res_layer and wms_layers:
+            wms_lower = [x.lower() for x in list(self.wms.contents)]
+            res_lower = resource.get("layer").lower()
+            if res_lower in wms_lower:
+                return wms_layers
+        elif wms_layers:
+            return wms_layers[0]
 
     # Return all of the information we need to access features in a WMS as one dictionary
     def get_layer_info(self, data_dict):
@@ -70,7 +68,7 @@ class HandleWMS():
             'layer': layer,
             'bbox': bbox,
             'srs': srs,
-            'format': format,
+            'tile_format': format,
             'service_url': service_url
         }
 
