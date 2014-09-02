@@ -75,7 +75,7 @@ this.ckan.module('ogc_view', function ($, _) {
 
           map = new L.Map('map', opts).fitBounds(bounds);
 
-          baseMap = new L.TileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {
+          baseMap = new L.TileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
             subdomains: 1234,
             attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">'
               + 'MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetm'

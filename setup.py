@@ -23,6 +23,6 @@ setup(
     entry_points=\
     """
     [ckan.plugins]
-    ogc_view=ckanext.ogcpreview.plugin:OGCPreview
+    ogc_preview=ckanext.ogcpreview.plugin:OGCPreview
     """,
 )
