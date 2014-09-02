@@ -47,13 +47,13 @@ class HandleWMS():
     def do_layer_check(self, data_dict):
         wms_layers = list(self.wms.contents)
         resource = data_dict.get("resource", {})
-        res_layer = resource.get("layer")
+        res_layer = resource.get("layer", None)
 
         if res_layer and wms_layers:
-            wms_lower = [x.lower() for x in list(self.wms.contents)]
+            wms_lower = [x.lower() for x in wms_layers]
             res_lower = resource.get("layer").lower()
             if res_lower in wms_lower:
-                return wms_layers
+                return res_layer
         elif wms_layers:
             return wms_layers[0]
 
@@ -93,19 +93,17 @@ class HandleWFS():
     # Pass in a dictionary with the layer name bound to 'layer'.  If the 'layer' is not found, then just return the
     # first layer in the list of available layers
     def do_layer_check(self, data_dict):
-        layer_list = list(self.wfs.contents)
+        wfs_layers = list(self.wfs.contents)
         resource = data_dict.get("resource", {})
-        this_layer = resource.get("layer")
-        try:
-            first_layer = layer_list[0]
-            if this_layer in layer_list:
-                return this_layer
-            elif this_layer.lower() in layer_list:
-                return this_layer.lower()
-            else:
-                return first_layer
-        except Exception:
-            pass
+        res_layer = resource.get("layer", None)
+
+        if res_layer and wfs_layers:
+            wfs_lower = [x.lower() for x in wfs_layers]
+            res_lower = res_layer.lower()
+            if res_lower in wfs_lower:
+                return res_layer
+        elif wfs_layers:
+            return wfs_layers[0]
 
     # Build a URL for accessing service data, getFeature is default
     def build_url(self, typename=None, method='{http://www.opengis.net/wfs}Get',

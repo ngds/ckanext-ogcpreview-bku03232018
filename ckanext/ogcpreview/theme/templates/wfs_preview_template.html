@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends "dataviewer/base.html" %}
 
 {% block page %}
-  <div data-module="recline_view" data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=true)) }}">
+  <div data-module="ogc_view" data-module-site_url="{{ h.dump_json(h.url('/', locale='default', qualified=true)) }}">
     <h4 class="loading-dialog">
       <div class="loading-spinner"></div>
       <div class="left">{{ _('Loading...') }}</div>
     </h4>
+    <div id="map" style="width: 100%; height: 600px"></div>
   </div>
+
+  {% resource 'ckanext-ogcpreview/main' %}
 {% endblock %}
