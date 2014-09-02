@@ -23,6 +23,6 @@ setup(
     entry_points=\
     """
     [ckan.plugins]
-    ogcpreview=ckanext.csw.plugin:DatastoreCSW
+    ogc_view=ckanext.ogcpreview.plugin:OGCPreview
     """,
 )

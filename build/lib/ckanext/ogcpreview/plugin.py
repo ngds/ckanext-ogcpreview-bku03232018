@@ -23,9 +23,9 @@ class OGCPreview(p.SingletonPlugin):
         resource = data_dict['resource']
         format_lower = resource['format'].lower()
         if format_lower in self.OGC:
-            return True
+            return {'can_preview': True}
         else:
-            return False
+            return {'can_preview': False}
 
     # Get the GML service for our resource and parse it into a JSON object
     # that is compatible with recline.  Bind that JSON object to the
