@@ -9,7 +9,7 @@ this.recline.Backend.Ckan = this.recline.Backend.Ckan || {};
   // This provides connection to the CKAN DataStore (v2)
   //
   // General notes
-  // 
+  //
   // We need 2 things to make most requests:
   //
   // 1. CKAN API endpoint
@@ -17,13 +17,13 @@ this.recline.Backend.Ckan = this.recline.Backend.Ckan || {};
   //
   // There are 2 ways to specify this information.
   //
-  // EITHER (checked in order): 
+  // EITHER (checked in order):
   //
   // * Every dataset must have an id equal to its resource id on the CKAN instance
   // * The dataset has an endpoint attribute pointing to the CKAN API endpoint
   //
   // OR:
-  // 
+  //
   // Set the url attribute of the dataset to point to the Resource on the CKAN instance. The endpoint and id will then be automatically computed.
 
   my.__type__ = 'ckan';
@@ -58,7 +58,7 @@ this.recline.Backend.Ckan = this.recline.Backend.Ckan || {};
         fields: fields,
         useMemoryStore: false
       };
-      dfd.resolve(out);  
+      dfd.resolve(out);
     });
     return dfd.promise();
   };
@@ -107,7 +107,7 @@ this.recline.Backend.Ckan = this.recline.Backend.Ckan || {};
         total: results.result.total,
         hits: results.result.records
       };
-      dfd.resolve(out);  
+      dfd.resolve(out);
     });
     return dfd.promise();
   };
@@ -117,7 +117,7 @@ this.recline.Backend.Ckan = this.recline.Backend.Ckan || {};
   // Simple wrapper around the CKAN DataStore API
   //
   // @param endpoint: CKAN api endpoint (e.g. http://datahub.io/api)
-  my.DataStore = function(endpoint) { 
+  my.DataStore = function(endpoint) {
     var that = {endpoint: endpoint || my.API_ENDPOINT};
 
     that.search = function(data) {
@@ -226,7 +226,7 @@ this.recline.Backend.CSV = this.recline.Backend.CSV || {};
   //
   // @return The CSV parsed as an array
   // @type Array
-  // 
+  //
   // @param {String} s The string to convert
   // @param {Object} options Options for loading CSV including
   // 	  @param {Boolean} [trim=false] If set to True leading and trailing
@@ -326,7 +326,7 @@ this.recline.Backend.CSV = this.recline.Backend.CSV || {};
   };
 
   // ## serializeCSV
-  // 
+  //
   // Convert an Object or a simple array of arrays into a Comma
   // Separated Values string.
   //
@@ -334,15 +334,15 @@ this.recline.Backend.CSV = this.recline.Backend.CSV || {};
   //
   // @return The array serialized as a CSV
   // @type String
-  // 
+  //
   // @param {Object or Array} dataToSerialize The Object or array of arrays to convert. Object structure must be as follows:
   //
   //     {
-  //       fields: [ {id: .., ...}, {id: ..., 
+  //       fields: [ {id: .., ...}, {id: ...,
   //       records: [ { record }, { record }, ... ]
   //       ... // more attributes we do not care about
   //     }
-  // 
+  //
   // @param {object} options Options for serializing the CSV file including
   //   delimiter and quotechar (see parseCSV options parameter above for
   //   details on these).
@@ -453,10 +453,10 @@ this.recline.Backend.DataProxy = this.recline.Backend.DataProxy || {};
   // URL for the dataproxy
   my.dataproxy_url = 'http://jsonpdataproxy.appspot.com';
   // Timeout for dataproxy (after this time if no response we error)
-  // Needed because use JSONP so do not receive e.g. 500 errors 
+  // Needed because use JSONP so do not receive e.g. 500 errors
   my.timeout = 5000;
 
-  
+
   // use either jQuery or Underscore Deferred depending on what is available
   var Deferred = _.isUndefined(this.jQuery) ? _.Deferred : jQuery.Deferred;
 
@@ -495,7 +495,7 @@ this.recline.Backend.DataProxy = this.recline.Backend.DataProxy || {};
   };
 
   // ## _wrapInTimeout
-  // 
+  //
   // Convenience method providing a crude way to catch backend errors on JSONP calls.
   // Many of backends use JSONP and so will not get error messages and this is
   // a crude way to catch those errors.
@@ -535,14 +535,14 @@ this.recline.Backend.ElasticSearch = this.recline.Backend.ElasticSearch || {};
   //
   // @param {String} endpoint: url for ElasticSearch type/table, e.g. for ES running
   // on http://localhost:9200 with index twitter and type tweet it would be:
-  // 
+  //
   // <pre>http://localhost:9200/twitter/tweet</pre>
   //
   // @param {Object} options: set of options such as:
   //
   // * headers - {dict of headers to add to each request}
   // * dataType: dataType for AJAx requests e.g. set to jsonp to make jsonp requests (default is json requests)
-  my.Wrapper = function(endpoint, options) { 
+  my.Wrapper = function(endpoint, options) {
     var self = this;
     this.endpoint = endpoint;
     this.options = _.extend({
@@ -692,7 +692,7 @@ this.recline.Backend.ElasticSearch = this.recline.Backend.ElasticSearch || {};
   };
 
 
-  // ## Recline Connectors 
+  // ## Recline Connectors
   //
   // Requires URL of ElasticSearch endpoint to be specified on the dataset
   // via the url attribute.
@@ -778,7 +778,7 @@ this.recline.Backend.ElasticSearch = this.recline.Backend.ElasticSearch || {};
 
 
 // ### makeRequest
-// 
+//
 // Just $.ajax but in any headers in the 'headers' attribute of this
 // Backend instance. Example:
 //
@@ -815,7 +815,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
   var Deferred = _.isUndefined(this.jQuery) ? _.Deferred : jQuery.Deferred;
 
   // ## Google spreadsheet backend
-  // 
+  //
   // Fetch data from a Google Docs spreadsheet.
   //
   // Dataset must have a url attribute pointing to the Gdocs or its JSON feed e.g.
@@ -838,7 +838,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
   // * fields: array of Field objects
   // * records: array of objects for each row
   my.fetch = function(dataset) {
-    var dfd  = new Deferred(); 
+    var dfd  = new Deferred();
     var urls = my.getGDocsAPIUrls(dataset.url);
 
     // TODO cover it with tests
@@ -886,7 +886,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
   // columnsToUse: list of columns to use (specified by field names)
   // colTypes: dictionary (with column names as keys) specifying types (e.g. range, percent for use in conversion).
   // :return: tabular data object (hash with keys: field and data).
-  // 
+  //
   // Issues: seems google docs return columns in rows in random order and not even sure whether consistent across rows.
   my.parseData = function(gdocsSpreadsheet, options) {
     var options  = options || {};
@@ -917,7 +917,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
         var _keyname = 'gsx$' + col;
         var value = entry[_keyname].$t;
         var num;
- 
+
         // TODO cover this part of code with test
         // TODO use the regexp only once
         // if labelled as % and value contains %, convert
@@ -944,7 +944,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
     var key;
     var worksheet;
     var urls;
-    
+
     if(!!matches) {
         key = matches[1];
         // the gid in url is 0-based and feed url is 1-based
@@ -965,7 +965,7 @@ this.recline.Backend.GDocs = this.recline.Backend.GDocs || {};
         urls = {
           worksheet  : 'https://spreadsheets.google.com/feeds/list/'+ key +'/'+ worksheet +'/public/values?alt=json',
           spreadsheet: 'https://spreadsheets.google.com/feeds/worksheets/'+ key +'/public/basic?alt=json'
-        }            
+        }
     }
 
     return urls;
@@ -1041,7 +1041,7 @@ this.recline.Backend.Memory = this.recline.Backend.Memory || {};
       var numRows = queryObj.size || this.records.length;
       var start = queryObj.from || 0;
       var results = this.records;
-      
+
       results = this._applyFilters(results, queryObj);
       results = this._applyFreeTextQuery(results, queryObj);
 
@@ -1146,7 +1146,7 @@ this.recline.Backend.Memory = this.recline.Backend.Memory || {};
             var foundmatch = false;
             _.each(self.fields, function(field) {
               var value = rawdoc[field.id];
-              if ((value !== null) && (value !== undefined)) { 
+              if ((value !== null) && (value !== undefined)) {
                 value = value.toString();
               } else {
                 // value can be null (apparently in some cases)
@@ -1238,15 +1238,15 @@ my.Transform.evalFunction = function(funcString) {
 my.Transform.previewTransform = function(docs, editFunc, currentColumn) {
   var preview = [];
   var updated = my.Transform.mapDocs($.extend(true, {}, docs), editFunc);
-  for (var i = 0; i < updated.docs.length; i++) {      
+  for (var i = 0; i < updated.docs.length; i++) {
     var before = docs[i]
       , after = updated.docs[i]
       ;
     if (!after) after = {};
     if (currentColumn) {
-      preview.push({before: before[currentColumn], after: after[currentColumn]});      
+      preview.push({before: before[currentColumn], after: after[currentColumn]});
     } else {
-      preview.push({before: before, after: after});      
+      preview.push({before: before, after: after});
     }
   }
   return preview;
@@ -1257,7 +1257,7 @@ my.Transform.mapDocs = function(docs, editFunc) {
     , deleted = []
     , failed = []
     ;
-  
+
   var updatedDocs = _.map(docs, function(doc) {
     try {
       var updated = editFunc(_.clone(doc));
@@ -1273,13 +1273,13 @@ my.Transform.mapDocs = function(docs, editFunc) {
     else if(updated && !_.isEqual(updated, doc)) {
       edited.push(updated);
     }
-    return updated;      
+    return updated;
   });
-  
+
   return {
-    updates: edited, 
-    docs: updatedDocs, 
-    deletes: deleted, 
+    updates: edited,
+    docs: updatedDocs,
+    deletes: deleted,
     failed: failed
   };
 };
@@ -1441,7 +1441,7 @@ my.Dataset = Backbone.Model.extend({
   },
 
   // ### _normalizeRecordsAndFields
-  // 
+  //
   // Get a proper set of fields and records from incoming set of fields and records either of which may be null or arrays or objects
   //
   // e.g. fields = ['a', 'b', 'c'] and records = [ [1,2,3] ] =>
@@ -1458,7 +1458,7 @@ my.Dataset = Backbone.Model.extend({
           return {id: key};
         });
       }
-    } 
+    }
 
     // fields is an array of strings (i.e. list of field headings/ids)
     if (fields && fields.length > 0 && (fields[0] === null || typeof(fields[0]) != 'object')) {
@@ -1592,7 +1592,7 @@ my.Dataset = Backbone.Model.extend({
   // ### getFieldsSummary
   //
   // Get a summary for each field in the form of a `Facet`.
-  // 
+  //
   // @return null as this is async function. Provides deferred/promise interface.
   getFieldsSummary: function() {
     var self = this;
@@ -1639,7 +1639,7 @@ my.Dataset = Backbone.Model.extend({
 
 
 // ## <a id="record">A Record</a>
-// 
+//
 // A single record (or row) in the dataset
 my.Record = Backbone.Model.extend({
   constructor: function Record() {
@@ -1647,7 +1647,7 @@ my.Record = Backbone.Model.extend({
   },
 
   // ### initialize
-  // 
+  //
   // Create a Record
   //
   // You usually will not do this directly but will have records created by
@@ -1695,7 +1695,7 @@ my.Record = Backbone.Model.extend({
   summary: function(record) {
     var self = this;
     var html = '<div class="recline-record-summary">';
-    this.fields.each(function(field) { 
+    this.fields.each(function(field) {
       if (field.id != 'id') {
         html += '<div class="' + field.id + '"><strong>' + field.get('label') + '</strong>: ' + self.getFieldValue(field) + '</div>';
       }
@@ -1779,7 +1779,7 @@ my.Field = Backbone.Model.extend({
       return JSON.stringify(val);
     },
     'number': function(val, field, doc) {
-      var format = field.get('format'); 
+      var format = field.get('format');
       if (format === 'percentage') {
         return val + '%';
       }
@@ -1851,7 +1851,7 @@ my.Query = Backbone.Model.extend({
         lat: 0
       }
     }
-  },  
+  },
   // ### addFilter(filter)
   //
   // Add a new filter specified by the filter hash and append to the list of filters
@@ -2464,13 +2464,13 @@ this.recline.View = this.recline.View || {};
 // * model: recline.Model.Dataset
 // * state: (optional) configuration hash of form:
 //
-//        { 
+//        {
 //          group: {column name for x-axis},
 //          series: [{column name for series A}, {column name series B}, ... ],
 //          graphType: 'line',
 //          graphOptions: {custom [Flotr2 options](http://www.humblesoftware.com/flotr2/documentation#configuration)}
 //        }
-// 
+//
 // NB: should *not* provide an el argument to the view but must let the view
 // generate the element itself (you can then append view.el to the DOM.
 my.Flotr2 = Backbone.View.extend({
@@ -2533,7 +2533,7 @@ my.Flotr2 = Backbone.View.extend({
     // * The relevant div that graph attaches to his hidden at the moment of creating the plot -- Flotr2 will complain with
     //
     //   Uncaught Invalid dimensions for plot, width = 0, height = 0
-    // * There is no data for the plot -- either same error or may have issues later with errors like 'non-existent node-value' 
+    // * There is no data for the plot -- either same error or may have issues later with errors like 'non-existent node-value'
     var areWeVisible = !jQuery.expr.filters.hidden(this.el[0]);
     if ((!areWeVisible || this.model.records.length === 0)) {
       this.needToRedraw = true;
@@ -2564,13 +2564,13 @@ my.Flotr2 = Backbone.View.extend({
   // needs to be function as can depend on state
   //
   // @param typeId graphType id (lines, lines-and-points etc)
-  getGraphOptions: function(typeId) { 
+  getGraphOptions: function(typeId) {
     var self = this;
 
     var tickFormatter = function (x) {
       return getFormattedX(x);
     };
-    
+
     // infoboxes on mouse hover on points/bars etc
     var trackFormatter = function (obj) {
       var x = obj.x;
@@ -2581,7 +2581,7 @@ my.Flotr2 = Backbone.View.extend({
         x = y;
         y = _tmp;
       }
-      
+
       x = getFormattedX(x);
 
       var content = _.template('<%= group %> = <%= x %>, <%= series %> = <%= y %>', {
@@ -2590,10 +2590,10 @@ my.Flotr2 = Backbone.View.extend({
         series: obj.series.label,
         y: y
       });
-      
+
       return content;
     };
-    
+
     var getFormattedX = function (x) {
       var xfield = self.model.fields.get(self.state.attributes.group);
 
@@ -2609,26 +2609,26 @@ my.Flotr2 = Backbone.View.extend({
       } else if (isDateTime) {
         x = new Date(parseInt(x)).toLocaleDateString();
       }
-      return x;    
+      return x;
     }
-    
+
     var xaxis = {};
     xaxis.tickFormatter = tickFormatter;
 
     var yaxis = {};
     yaxis.autoscale = true;
     yaxis.autoscaleMargin = 0.02;
-    
+
     var mouse = {};
     mouse.track = true;
     mouse.relative = true;
     mouse.trackFormatter = trackFormatter;
-    
+
     var legend = {};
     legend.position = 'ne';
-    
+
     // mouse.lineColor is set in createSeries
-    var optionsPerGraphType = { 
+    var optionsPerGraphType = {
       lines: {
         legend: legend,
         colors: this.graphColors,
@@ -2662,7 +2662,7 @@ my.Flotr2 = Backbone.View.extend({
         lines: { show: false },
         xaxis: yaxis,
         yaxis: xaxis,
-        mouse: { 
+        mouse: {
           track: true,
           relative: true,
           trackFormatter: trackFormatter,
@@ -2674,7 +2674,7 @@ my.Flotr2 = Backbone.View.extend({
           show: true,
           horizontal: true,
           shadowSize: 0,
-          barWidth: 0.8         
+          barWidth: 0.8
         }
       },
       columns: {
@@ -2683,7 +2683,7 @@ my.Flotr2 = Backbone.View.extend({
         lines: { show: false },
         xaxis: xaxis,
         yaxis: yaxis,
-        mouse: { 
+        mouse: {
             track: true,
             relative: true,
             trackFormatter: trackFormatter,
@@ -2695,15 +2695,15 @@ my.Flotr2 = Backbone.View.extend({
             show: true,
             horizontal: false,
             shadowSize: 0,
-            barWidth: 0.8         
+            barWidth: 0.8
         }
       },
       grid: { hoverable: true, clickable: true }
     };
-    
+
     if (self.state.get('graphOptions')){
       return _.extend(optionsPerGraphType[typeId],
-        self.state.get('graphOptions')  
+        self.state.get('graphOptions')
       )
     }else{
       return optionsPerGraphType[typeId];
@@ -2722,7 +2722,7 @@ my.Flotr2 = Backbone.View.extend({
         // time series
         var xtype = xfield.get('type');
         var isDateTime = (xtype === 'date' || xtype === 'date-time' || xtype  === 'time');
-        
+
         if (isDateTime) {
           // datetime
           if (self.state.attributes.graphType != 'bars' && self.state.attributes.graphType != 'columns') {
@@ -2742,7 +2742,7 @@ my.Flotr2 = Backbone.View.extend({
 
         var yfield = self.model.fields.get(field);
         var y = doc.getFieldValue(yfield);
-        
+
         // horizontal bar chart
         if (self.state.attributes.graphType == 'bars') {
           points.push([y, x]);
@@ -2942,7 +2942,7 @@ my.Grid = Backbone.View.extend({
     var state = _.extend({
         hiddenFields: []
       }, modelEtc.state
-    ); 
+    );
     this.state = new recline.Model.ObjectState(state);
   },
 
@@ -2959,7 +2959,7 @@ my.Grid = Backbone.View.extend({
     sort[0][this.tempState.currentColumn] = {order: order};
     this.model.query({sort: sort});
   },
-  
+
   hideColumn: function() {
     var hiddenFields = this.state.get('hiddenFields');
     hiddenFields.push(this.tempState.currentColumn);
@@ -2968,7 +2968,7 @@ my.Grid = Backbone.View.extend({
     this.state.trigger('change');
     this.render();
   },
-  
+
   showColumn: function(e) {
     var hiddenFields = _.without(this.state.get('hiddenFields'), $(e.target).data('column'));
     this.state.set({hiddenFields: hiddenFields});
@@ -3001,7 +3001,7 @@ my.Grid = Backbone.View.extend({
   ',
 
   toTemplateJSON: function() {
-    var self = this; 
+    var self = this;
     var modelData = this.model.toJSON();
     modelData.notEmpty = ( this.fields.length > 0 );
     // TODO: move this sort of thing into a toTemplateJSON method on Dataset?
@@ -3022,7 +3022,7 @@ my.Grid = Backbone.View.extend({
     // compute field widths (-20 for first menu col + 10px for padding on each col and finally 16px for the scrollbar)
     var fullWidth = self.el.width() - 20 - 10 * numFields - this.scrollbarDimensions.width;
     var width = parseInt(Math.max(50, fullWidth / numFields), 10);
-    // if columns extend outside viewport then remainder is 0 
+    // if columns extend outside viewport then remainder is 0
     var remainder = Math.max(fullWidth - numFields * width,0);
     _.each(this.fields, function(field, idx) {
       // add the remainder to the first field width so we make up full col
@@ -3055,7 +3055,7 @@ my.Grid = Backbone.View.extend({
   },
 
   // ### _scrollbarSize
-  // 
+  //
   // Measure width of a vertical scrollbar and height of a horizontal scrollbar.
   //
   // @return: { width: pixelWidth, height: pixelHeight }
@@ -3105,7 +3105,7 @@ my.GridRow = Backbone.View.extend({
     'click .data-table-cell-editor .okButton': 'onEditorOK',
     'click .data-table-cell-editor .cancelButton': 'onEditorCancel'
   },
-  
+
   toTemplateJSON: function() {
     var self = this;
     var doc = this.model;
@@ -3194,7 +3194,7 @@ this.recline.View = this.recline.View || {};
 // This view allows to plot gereferenced records on a map. The location
 // information can be provided in 2 ways:
 //
-// 1. Via a single field. This field must be either a geo_point or 
+// 1. Via a single field. This field must be either a geo_point or
 // [GeoJSON](http://geojson.org) object
 // 2. Via two fields with latitude and longitude coordinates.
 //
@@ -3848,7 +3848,7 @@ this.recline.View = this.recline.View || {};
 // ## MultiView
 //
 // Manage multiple views together along with query editor etc. Usage:
-// 
+//
 // <pre>
 // var myExplorer = new model.recline.MultiView({
 //   model: {{recline.Model.Dataset instance}}
@@ -3856,10 +3856,10 @@ this.recline.View = this.recline.View || {};
 //   views: {{dataset views}}
 //   state: {{state configuration -- see below}}
 // });
-// </pre> 
+// </pre>
 //
 // ### Parameters
-// 
+//
 // **model**: (required) recline.model.Dataset instance.
 //
 // **el**: (required) DOM element to bind to. NB: the element already
@@ -3892,7 +3892,7 @@ this.recline.View = this.recline.View || {};
 //
 // **sidebarViews**: (optional) the sidebar views (Filters, Fields) for
 // MultiView to show. This is an array of view hashes. If not provided
-// initialize with (recline.View.)FilterEditor and Fields views (with obvious 
+// initialize with (recline.View.)FilterEditor and Fields views (with obvious
 // id and labels!).
 //
 // <pre>
@@ -3930,7 +3930,7 @@ this.recline.View = this.recline.View || {};
 // </pre>
 //
 // Note that at present we do *not* serialize information about the actual set
-// of views in use -- e.g. those specified by the views argument -- but instead 
+// of views in use -- e.g. those specified by the views argument -- but instead
 // expect either that the default views are fine or that the client to have
 // initialized the MultiView with the relevant views themselves.
 my.MultiView = Backbone.View.extend({
@@ -4186,7 +4186,7 @@ my.MultiView = Backbone.View.extend({
   },
 
   // create a state object for this view and do the job of
-  // 
+  //
   // a) initializing it from both data passed in and other sources (e.g. hash url)
   //
   // b) ensure the state object is updated in responese to changes in subviews, query etc.
@@ -4899,7 +4899,7 @@ my.Timeline = Backbone.View.extend({
     this.model.records.each(function(record) {
       var newEntry = self.convertRecord(record, self.fields);
       if (newEntry) {
-        out.timeline.date.push(newEntry); 
+        out.timeline.date.push(newEntry);
       }
     });
     // if no entries create a placeholder entry to prevent Timeline crashing with error
@@ -5089,7 +5089,7 @@ this.recline.View = this.recline.View || {};
 
 // ## FacetViewer
 //
-// Widget for displaying facets 
+// Widget for displaying facets
 //
 // Usage:
 //
@@ -5097,7 +5097,7 @@ this.recline.View = this.recline.View || {};
 //        model: dataset
 //      });
 my.FacetViewer = Backbone.View.extend({
-  className: 'recline-facet-viewer', 
+  className: 'recline-facet-viewer',
   template: ' \
     <div class="facets"> \
       {{#facets}} \
@@ -5192,7 +5192,7 @@ this.recline.View = this.recline.View || {};
 (function($, my) {
 
 my.Fields = Backbone.View.extend({
-  className: 'recline-fields-view', 
+  className: 'recline-fields-view',
   template: ' \
     <div class="accordion fields-list well"> \
     <h3>Fields <a href="#" class="js-show-hide">+</a></h3> \
@@ -5271,7 +5271,7 @@ this.recline.View = this.recline.View || {};
 (function($, my) {
 
 my.FilterEditor = Backbone.View.extend({
-  className: 'recline-filter-editor well', 
+  className: 'recline-filter-editor well',
   template: ' \
     <div class="filters"> \
       <h3>Filters</h3> \
@@ -5441,7 +5441,7 @@ this.recline.View = this.recline.View || {};
 (function($, my) {
 
 my.Pager = Backbone.View.extend({
-  className: 'recline-pager', 
+  className: 'recline-pager',
   template: ' \
     <div class="pagination"> \
       <ul> \
@@ -5501,7 +5501,7 @@ this.recline.View = this.recline.View || {};
 (function($, my) {
 
 my.QueryEditor = Backbone.View.extend({
-  className: 'recline-query-editor', 
+  className: 'recline-query-editor',
   template: ' \
     <form action="" method="GET" class="form-inline"> \
       <div class="input-prepend text-query"> \
@@ -5544,7 +5544,7 @@ this.recline.View = this.recline.View || {};
 (function($, my) {
 
 my.ValueFilter = Backbone.View.extend({
-  className: 'recline-filter-editor well', 
+  className: 'recline-filter-editor well',
   template: ' \
     <div class="filters"> \
       <h3>Filters</h3> \
@@ -5750,7 +5750,7 @@ my.ValueFilter = Backbone.View.extend({
 				if (this.state.get('group') && this.state.get('series')) {
 					var series = this.createSeries();
 					var options = this.getGraphOptions(this.state.attributes.graphType, series[0].data.length);
-					
+
 					// this.plot = $.plot(this.$graph, [ series[0] ], options);
 					console.log(series[0].bins[0], series[0].bins[1], series[0].bins[2], series[0].bins[3]);
 					console.log(this.$graph);
@@ -6017,14 +6017,14 @@ my.ValueFilter = Backbone.View.extend({
 						hoverable: true
 					});
 				});
-				
+
 				this.calculateHistogram(series);
-				
+
 				//console.log("Length of series= " + series[0].data.length);
-				
+
 				return series;
 			},
-			
+
 			// function calculateHistogram
 			//
 			// Calculates the Histogram of a data series.
@@ -6033,18 +6033,18 @@ my.ValueFilter = Backbone.View.extend({
 			//
 			calculateHistogram: function(series_array) {
 				_.each(series_array, function(series) {
-					
+
 					console.log("Label:" + series.label);
 					console.log("data.length: " + series.data.length);
 					console.log(series);
-					
+
 					var style_obj= $.parseJSON(series.style);
 					var config_obj= $.parseJSON(series.config);
 					var data = series.data;
 
 					var lower= data[0][0];
 					var upper= data[0][0];
-					
+
 					// Math.min.apply(Math, series.data.y); // series.config_obj.lower;
 					for (i=0; i < data.length; i+=1) {
 						lower= Math.min( lower, data[i][0] );
@@ -6052,7 +6052,7 @@ my.ValueFilter = Backbone.View.extend({
 						// if (data[i][1] > upper) { upper= data[i][1]; }
 						console.log("data[" + i + "][0]: " + data[i][0] + "\tdata[" + i + "][1]: " + data[i][1] + "\tlower: " + lower + "\tupper" + upper);
 					}
-					
+
 					var num_bins= $("#i_numBins").val(); // config_obj.num_bins;
 					var precision= $("#i_precision").val(); // style_obj.precision;
 
@@ -6063,7 +6063,7 @@ my.ValueFilter = Backbone.View.extend({
 					console.log('precision: ' + precision);
 					console.log('upper: ' + upper + '\tlower: ' + lower);
 
-					// initialize the Bins 
+					// initialize the Bins
 					for (i= 0; i<num_bins-1; i++) {
 						bins[i]= [ "[" + (i*bin_width).toPrecision(precision) + "-" + ((i+1)*bin_width).toPrecision(precision) + "[", 0 ];
 					}
@@ -6071,14 +6071,14 @@ my.ValueFilter = Backbone.View.extend({
 					i= num_bins-1;
 					bins[i]= [ "[" + (i*bin_width).toPrecision(3) + "-" + ((i+1)*bin_width).toPrecision(3) + "]", 0 ];
 
-					// fill the Bins 
+					// fill the Bins
 					for (i= 0; i<data.length; i++) {
 						pos= Math.floor(data[i][0] / bin_width);
-						// we include the upper boundary in the last bin 
+						// we include the upper boundary in the last bin
 						if (pos==num_bins) {
 							pos= num_bins-1;
 						}
-						// anything beyond the last bin is ignored 
+						// anything beyond the last bin is ignored
 						if (pos <= num_bins) {
 							// console.log("d: " + data[i].y + " \t pos: " + pos);
 							bin= bins[pos];
@@ -6189,7 +6189,7 @@ my.ValueFilter = Backbone.View.extend({
 					_.each(tmpSeries, function(series, idx) {
 						self.addSeries(idx);
 						self._selectOption('.editor-series.js-series-' + idx, series);
-						
+
 					});
 					/* */
 					console.log("Print Range Slider");
@@ -6239,9 +6239,9 @@ my.ValueFilter = Backbone.View.extend({
 					};
 					this.state.set(updatedState);
 				},
-				
+
 				// This function is called via backbone when one of the input widgets has been changed
-				// We simply take the values of all inputs and update the relevant global variables of 
+				// We simply take the values of all inputs and update the relevant global variables of
 				// the histogram function accordingly.
 				onEditorInputSubmit: function(e) {
 					console.log("onEditorInputSubmit()");

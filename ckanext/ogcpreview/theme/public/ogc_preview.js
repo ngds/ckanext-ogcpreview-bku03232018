@@ -53,7 +53,9 @@ this.ckan.module('ogc_view', function ($, _) {
       if (['wfs', 'ogc:wfs'].indexOf(format) > -1) {
           resourceData.backend = 'memory';
           dataset = new recline.Model.Dataset({records:resourceData.reclineJSON});
-          dataset.fetch().done(function(dataset){self.initializeDataExplorer(dataset)});
+          dataset.fetch().done(function (dataset) {
+            self.initializeDataExplorer(dataset)
+          });
       } else if (['wms', 'ogc:wms'].indexOf(format) > -1) {
         (function () {
           var map
