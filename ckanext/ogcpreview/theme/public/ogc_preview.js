@@ -73,20 +73,18 @@ this.ckan.module('ogc_view', function ($, _) {
             [bbox[3], bbox[2]]
           ]);
 
-          map = new L.Map('map', opts).fitBounds(bounds);
+          map = new L.map('map', opts).fitBounds(bounds);
 
-          baseMap = new L.TileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-            subdomains: 1234,
-            attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">'
-              + 'MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetm'
-              + 'ap.org">OpenStreetMap</a> contributors, <a href="http://creative'
-              + 'commons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          baseMap = new L.tileLayer("//otile{s}-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+            subdomains: '1234',
+            detectRetina: true,
+            attribution: 'Map data © OpenStreetMap contributors',
             minZoom: 1,
             maxZoom: 12
           });
 
           serviceUrl = resourceData.service_url.split('?')[0];
-          wms = new L.TileLayer.WMS(serviceUrl, {
+          wms = new L.tileLayer(serviceUrl, {
             layers: resourceData.layer,
             format: resourceData.tile_format,
             transparent: true
