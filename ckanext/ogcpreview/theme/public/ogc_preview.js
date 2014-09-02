@@ -55,27 +55,25 @@ this.ckan.module('ogc_view', function ($, _) {
           dataset = new recline.Model.Dataset({records:resourceData.reclineJSON});
           dataset.fetch().done(function(dataset){self.initializeDataExplorer(dataset)});
       } else if (['wms', 'ogc:wms'].indexOf(format) > -1) {
-
         (function () {
           var map
-            , opts
             , baseMap
+            , baseMapUrl
             , serviceUrl
             , wms
             , bbox
             , bounds
             ;
 
-          opts = {attributionControl: true};
           bbox = resourceData.bbox;
           bounds = L.latLngBounds([
             [bbox[1], bbox[0]],
             [bbox[3], bbox[2]]
           ]);
 
-          map = new L.map('map', opts).fitBounds(bounds);
-
-          baseMap = new L.tileLayer("//otile{s}-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+          map = new L.Map('map').fitBounds(bounds);
+          baseMapUrl = '//otile{s}-s.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png';
+          baseMap = new L.TileLayer(baseMapUrl, {
             subdomains: '1234',
             detectRetina: true,
             attribution: 'Map data © OpenStreetMap contributors',
@@ -84,14 +82,15 @@ this.ckan.module('ogc_view', function ($, _) {
           });
 
           serviceUrl = resourceData.service_url.split('?')[0];
-          wms = new L.tileLayer(serviceUrl, {
+          wms = new L.TileLayer.WMS(serviceUrl, {
             layers: resourceData.layer,
-            format: resourceData.tile_format,
+            format: 'image/png',
             transparent: true
           });
 
           map.addLayer(baseMap);
           map.addLayer(wms);
+          $('.loading-dialog').remove();
         })();
       }
     },
