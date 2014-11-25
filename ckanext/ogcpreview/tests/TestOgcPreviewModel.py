@@ -4,8 +4,7 @@ import os
 import pprint
 
 class TestOGCPreviewModel(object):
-
-    #setup_class executes (auto once) before anything in this class
+    # setup_class executes (auto once) before anything in this class
     @classmethod
     def setup_class(self):
         print ("")
@@ -28,8 +27,10 @@ class TestOGCPreviewModel(object):
     def teardown_class(self):
         print ("")
         self.oHandleWMS = None
+        self.oBadHandleWMS = None
         self.serviceUrl = None
         del self.oHandleWMS
+        del self.oBadHandleWMS
         del self.serviceUrl
 
     #setup executes before each method in this class
@@ -46,24 +47,37 @@ class TestOGCPreviewModel(object):
     def test_GetLayerInfo(self):
         print 'test_GetLayerInfo(): Running actual test code ..........................'
 
-	def is_array(var):
-	    return isinstance(var, (list, tuple))
+        def is_array(var):
+            return isinstance(var, (list, tuple))
 
-	params = {}
+        params = {}
 
         try:
-	    result = self.oHandleWMS.get_layer_info(params)
+            result = self.oHandleWMS.get_layer_info(params)
 
             assert 'srs' in result
             assert 'layer' in result
             assert 'bbox' in result
             assert 'tile_format' in result
-	    assert 'service_url' in result
+            assert 'service_url' in result
 
-	    assert is_array(result['bbox'])
+            assert is_array(result['bbox'])
             assert isinstance(result['srs'], (unicode, str, basestring))
             assert isinstance(result['tile_format'], (unicode, str, basestring))
-	    assert isinstance(result['service_url'], (unicode, str, basestring))
-    	except:
-    	    print "Data returned is not correct or one or more of important fields are missing"
-    	    assert False
+            assert isinstance(result['service_url'], (unicode, str, basestring))
+
+        except:
+            print "Data returned is not correct or one or more of important fields are missing"
+            assert False
+
+
+    #testBad handleWMSWrongUrl model instantiation method
+    def testBad_handleWMSWrongUrl(self):
+        print 'testBad_handleWMSWrongUrl(): Running actual test code ..........................'
+
+        try:
+            self.oBadHandleWMS = OGCPreviewModel.HandleWMS('http://wrong-url.com/wrong?')
+
+        except:
+            print "Link provided is wrong"
+            pass
