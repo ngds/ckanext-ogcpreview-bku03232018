@@ -1,6 +1,7 @@
 import ckan.plugins as p
 import ckanext.ogcpreview.model.process as process
-
+from pylons import config
+from urlparse import urlparse
 
 class OGCPreview(p.SingletonPlugin):
     '''
@@ -38,6 +39,20 @@ class OGCPreview(p.SingletonPlugin):
                 p.toolkit.c.resource["bbox"] = ottoman["bbox"]
                 p.toolkit.c.resource["srs"] = ottoman["srs"]
                 p.toolkit.c.resource["tile_format"] = ottoman["tile_format"]
+
+		#PROXY SETTING
+                #If geoserver is under proxy, change service_url to proxied one in order to show wms layer by JS
+                useProxy = config.get("geoserver.use_proxy", False)
+                ProxiedPath = config.get("geoserver.proxied_path", None)
+                siteUrl = config.get("ckan.site_url", "http://127.0.0.1")
+
+                if useProxy and ProxiedPath and siteUrl:
+                    url = urlparse(ottoman["service_url"])
+                    #Generate proxied geoserver link (path.replace: it replaces original goeserver path with proxied path)
+                    ottoman["service_url"] = siteUrl+url.path.replace('/geoserver', ProxiedPath)+'?'+url.query
+
+                #END PROXY SETTING
+
                 p.toolkit.c.resource["service_url"] = ottoman["service_url"]
                 p.toolkit.c.resource["error"] = False
             elif format in ['wfs', 'ogc:wfs']:
