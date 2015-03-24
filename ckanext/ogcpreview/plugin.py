@@ -32,7 +32,12 @@ class OGCPreview(p.SingletonPlugin):
             resource = data_dict["resource"]
             format = resource["format"].lower()
             if format in ['wms', 'ogc:wms']:
+
+                # for ogc:wms use url_ogc else use url
                 resourceURL = resource.get("url_ogc", {})
+                if not resourceURL:
+                    resourceURL = resource.get("url", {})
+
                 armchair = process.HandleWMS(resourceURL)
                 ottoman = armchair.get_layer_info(resource)
                 p.toolkit.c.resource["layer"] = ottoman["layer"]
@@ -42,7 +47,12 @@ class OGCPreview(p.SingletonPlugin):
                 p.toolkit.c.resource["service_url"] = ottoman["service_url"]
                 p.toolkit.c.resource["error"] = False
             elif format in ['wfs', 'ogc:wfs']:
+
+                # for ogc:wfs use url_ogc else use url
                 resourceURL = resource.get("url_ogc", {})
+                if not resourceURL: 
+                    resourceURL = resource.get("url", {})
+
                 armchair = process.HandleWFS(resourceURL)
                 reclineJSON = armchair.make_recline_json(data_dict)
                 p.toolkit.c.resource["reclineJSON"] = reclineJSON
